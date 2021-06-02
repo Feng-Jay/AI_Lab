@@ -5,13 +5,32 @@
 
 using namespace std;
 
-int ini[3][3]={2,8,3,1,0,4,7,6,5};
+int ini[3][3]={2,3,5,4,0,6,7,8,1};
 int tar[3][3]={1,2,3,8,0,4,7,6,5};
 int dx[4]={0,0,-1,1}; int dy[4]={1,-1,0,0};
 
 struct Martix{
     int martix[3][3];
 };
+
+int judge_valid(Martix mylist)
+{
+    int countt=0;
+    int array[9];
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            array[i*3+j]=mylist.martix[i][j];
+        }
+    }
+    for(int i=0;i<9;i++){
+        for(int j=i+1;j<9;j++){
+            if(array[i]>array[j])
+            countt++;
+        }
+    }
+    if(countt%2) return 1;
+    else return 0;
+}
 
 void init(Martix &mylist)
 {
@@ -115,6 +134,8 @@ Martix mylist;
 int main()
 {
     init(mylist);
+    if(judge_valid(mylist))
     BFS(mylist);
+    else cout<<"The input cann't solved by BFS"<<endl;
     return 0;
 }
