@@ -169,6 +169,6 @@ int main()
     init(mylist);
     if(judge_valid(mylist))
     AStar(mylist);
-    else cout<<"The input cann't solved by BFS"<<endl;
+    else cout<<"The input cann't solved by Astar"<<endl;
     return 0;
 }
