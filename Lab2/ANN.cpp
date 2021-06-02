@@ -11,7 +11,7 @@ const double LEARNING_RATE=0.9;
 typedef struct Inputlayer_Node{
     double data;//输入特征值
     double weight[2];
-}Inputlayer_Node;
+}Inputlayer_Node; 
 
 typedef struct Hiddenlayer_Node{
     double weight[2];//权重
