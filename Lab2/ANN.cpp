@@ -37,11 +37,14 @@ void standize()
     for(int m=0;m<5;m++){
         mmm[m]=trainingset[18][m]-mm[m];
     }
-    for(int m=0;m<5;m++){
+    for(int m=0;m<4;m++){
         for(int i=0;i<19;i++){
-            trainingset[i][m]=(1.0*(trainingset[i][m]-mm[m]))/(1.0*(trainingset[18][m]-mm[m]));
+            trainingset[i][m]=(1.0*(trainingset[i][m]-mm[m]))/(1.0*(47000-mm[m]));
         }
     }
+    for(int i=0;i<19;i++){
+            trainingset[i][4]=(1.0*(trainingset[i][4]-mm[4]))/(1.0*(35000-mm[4]));
+        }
     for(int i=0;i<19;i++){
         cout<<i<<" ";
         for(int j=0;j<5;j++)
@@ -67,12 +70,13 @@ int main()
     Out out1,out2;
     standize();
     // cout<<h1.weight[0]<<endl;
+    srand(1);
+    in1.wei(0.5+rand()%1,0.4+rand()%1);
+    in2.wei(0.4+rand()%1,0.2+rand()%1);
+    in3.wei(0.3+rand()%1,0.5+rand()%1);
     cout<<"Start training..."<<endl;
     for(int i=0;i<19;i++){
         in1.In(trainingset[i][0]);
-        // in1.wei(0.8,0.2);
-        // in2.wei(0.2,0.3);
-        // in3.wei(0.8,0.1);
         in2.In(trainingset[i][1]);
         in3.In(trainingset[i][2]);
         out1.Inres(trainingset[i][3]);
@@ -132,8 +136,8 @@ int main()
         double outcome,outcome1;
         outcome=out1.output; outcome1=out2.output;
         cout<<outcome<<" "<<outcome1<<endl;
-        outcome=out1.output*(59927-5126)+6126;
-        outcome1=out2.output*(34803-1237)+1237;
+        outcome=out1.output*(47000-5126)+5126;
+        outcome1=out2.output*(35000-1237)+1237;
         // outcome1=-1*log((1.0/outcome1)-1);
         // *(20803-1237)+1237;
         cout<<2009+i<<"年的公路客运量为"<<outcome<<" 货运量为"<<outcome1<<endl;

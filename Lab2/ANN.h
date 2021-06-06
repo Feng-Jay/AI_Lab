@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <time.h>
 
-const double LEARNING_RATE=0.035;
+const double LEARNING_RATE=0.01;
 
 class Input
 {
@@ -24,7 +24,7 @@ Input::Input(/* args */)
     input=0.0;
     output=0.0;
     srand(1);
-    weight[0]=0.5+rand()%1;
+    weight[0]=0.6+rand()%1;
     weight[1]=0.3+rand()%1;
 }
 void Input::wei(double x, double y)
@@ -67,10 +67,10 @@ Hidden::Hidden()
 {
     output=0.0;
     error=0.0;
-    xita=0.0;
+    xita=1;
     srand(2);
-    weight[0]=0.5+rand()%1;
-    weight[1]=0.3+rand()%1;
+    weight[0]=0.5+rand()%2;
+    weight[1]=0.2+rand()%2;
 }
 void Hidden::In(double in1,double in2,double in3)
 {
@@ -120,7 +120,7 @@ public:
 Out::Out()
 {
     lable=0.0;input[0]=0.0;input[1]=0.0;
-    xita=0.03;
+    xita=0.3;
     output=0.0;
     error=0.0;
 }
