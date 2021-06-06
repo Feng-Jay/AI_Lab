@@ -1,144 +1,9 @@
 #include <iostream>
 #include <cmath>
+#include "ANN.h"
+
 
 using namespace std;
-
-const double LEARNING_RATE=0.9;
-
-class Input
-{
-private:
-    double input;
-public:  
-    double output;
-    double weight[2];
-    void Calsum();
-    void Itera(double nexterror1,double nexterror2);
-    void In(double in);
-    Input(/* args */);
-};
-
-Input::Input(/* args */)
-{
-    input=0.0;
-    output=0.0;
-    weight[0]=0.5;
-    weight[1]=0.5;
-}
-void Input::In(double in)
-{
-    input=in;
-}
-void Input::Calsum()
-{
-    output=input;
-}
-
-void Input::Itera(double nexterror1,double nexterror2)
-{
-        weight[0]+=LEARNING_RATE*1.0*nexterror1*output;
-        weight[1]+=LEARNING_RATE*1.0*nexterror2*output;
-}
-
-class Hidden
-{
-private:
-    double input[3];
-    double xita;
-public:  
-    double output;
-    double error;
-    double weight[2];
-    void Calres1(Input a, Input b, Input c);
-    void Calres2(Input a, Input b, Input c);
-    void Calerror(double nexterror,double nexterror2);
-    void Itera(double nexterror, double nexterror2);
-    void In(double in1,double in2,double in3); 
-    Hidden();  
-};
-Hidden::Hidden()
-{
-    output=0.0;
-    error=0.0;
-    xita=0.2;
-    weight[0]=0.5; weight[1]=0.5;
-}
-void Hidden::In(double in1,double in2,double in3)
-{
-    input[0]=in1; input[1]=in2;input[2]=in3;
-}
-void Hidden::Calres1(Input a, Input b, Input c)
-{
-    double temp;
-    temp=a.output*a.weight[0]+b.output*b.weight[0]+c.output*c.weight[0]+xita;
-    output=1.0/(1.0+exp(-1.0*temp));
-}
-void Hidden::Calres2(Input a, Input b, Input c)
-{
-    double temp;
-    temp=a.output*a.weight[1]+b.output*b.weight[1]+c.output*c.weight[1]+xita;
-    output=1.0/(1.0+exp(-1.0*temp));
-}
-void Hidden::Calerror(double nexterror1,double nexterror2)
-{
-    double temp=output*1.0*(1.0-output)*(nexterror1*weight[0]+nexterror2*weight[1]);
-    error=temp;
-}
-void Hidden::Itera(double nexterror1, double nexterror2)
-{
-    weight[0]+=LEARNING_RATE*1.0*nexterror1*output;
-    weight[1]+=LEARNING_RATE*1.0*nexterror2*output;
-}
-
-class Out
-{
-private:
-    double lable;
-    double input[2];
-    double xita;
-public:
-    double output;
-    double error;
-    void calres1(Hidden h1, Hidden h2);
-    void calres2(Hidden h1, Hidden h2);
-    void calerror();
-    void Inres(double lab);
-    void In(Hidden h1,Hidden h2);
-    Out();
-};
-Out::Out()
-{
-    lable=0.0;input[0]=0.0;input[1]=0.0;
-    xita=0.3;
-    output=0.0;
-    error=0.0;
-}
-void Out::Inres(double lab)
-{
-    lable=lab;
-}
-void Out::In(Hidden h1, Hidden h2)
-{
-    input[0]=h1.output;
-    input[1]=h2.output;
-}
-
-void Out::calres1(Hidden h1, Hidden h2)
-{
-    double temp;
-    temp=h1.output*1.0*h1.weight[0]+h2.output*h2.weight[0];
-    output=1.0/(1.0+exp(-1.0*temp));
-}
-void Out::calres2(Hidden h1, Hidden h2)
-{
-    double temp;
-    temp=h1.output*1.0*h1.weight[1]+h2.output*h2.weight[1];
-    output=1.0/(1.0+exp(-1.0*temp));
-}
-void Out::calerror()
-{
-    error=1.0*output*(1-output)*(lable-output);
-}
 
 double trainingset[19][5]={
     {20.55,0.6,0.09,5126,1237},
@@ -161,16 +26,43 @@ double trainingset[19][5]={
     {56.76,2.85,0.67,40548,20724},
     {59.17,2.95,0.69,42927,20803}
 };
-double expectset[2][3]={{60.63,3.1,0.79},{73.39,3.9635,0.9880}};
+double expectset[2][3]={
+    {60.63,3.1,0.79},
+    {73.39,3.9635,0.9880}
+};
+void standize()
+{/*min-max*/
+    double mm[5]={20.55,0.6,0.09,5126,1237};
+    for(int m=0;m<5;m++){
+        for(int i=0;i<19;i++){
+            trainingset[i][m]=(1.0*(trainingset[i][m]-mm[m]))/(1.0*(trainingset[18][m]-mm[m]));
+        }
+    }
+    // for(int i=0;i<19;i++){
+    //     cout<<i<<" ";
+    //     for(int j=0;j<5;j++)
+    //     {cout<<trainingset[i][j]<<" ";}
+    //     cout<<endl;
+    // }
+     for(int m=0;m<3;m++){
+        for(int i=0;i<2;i++){
+            expectset[i][m]=(1.0*(expectset[i][m]-mm[m]))/(1.0*(trainingset[18][m]-mm[m]));
+        }
+    }
+}
 int main()
 {
-    cout<<"Start training..."<<endl;
     Input in1,in2,in3;
     Hidden h1,h2;
     Out out1,out2;
+    standize();
     // cout<<h1.weight[0]<<endl;
+    cout<<"Start training..."<<endl;
     for(int i=0;i<19;i++){
         in1.In(trainingset[i][0]);
+        // in1.wei(0.8,0.2);
+        // in2.wei(0.2,0.3);
+        // in3.wei(0.8,0.1);
         in2.In(trainingset[i][1]);
         in3.In(trainingset[i][2]);
         out1.Inres(trainingset[i][3]);
@@ -193,19 +85,27 @@ int main()
         h1.Calerror(out1.error,out2.error);
         h2.Calerror(out1.error,out2.error);
 
+        out1.Itera(); out2.Itera();
         h1.Itera(out1.error,out2.error);
         h2.Itera(out1.error,out2.error);
         in1.Itera(h1.error,h2.error);
         in2.Itera(h1.error,h2.error);
         in3.Itera(h1.error,h2.error);
     }
+    // debug
+    cout<<in1.weight[0]<<" "<<in1.weight[1]<<endl;
+    cout<<in2.weight[0]<<" "<<in2.weight[1]<<endl;
+    cout<<in3.weight[0]<<" "<<in3.weight[1]<<endl;
+    cout<<h1.weight[0]<<" "<<h1.weight[1]<<" "<<h1.xita<<endl;
+    cout<<h2.weight[0]<<" "<<h2.weight[1]<<" "<<h2.xita<<endl;
+    cout<<out1.xita<<endl;
+    cout<<out2.xita<<endl;
     cout<<"Traning over, begin expect..."<<endl;
     for(int i=0;i<2;i++){
         in1.In(expectset[i][0]);
         in2.In(expectset[i][1]);
-        in3.In(expectset[i][3]);
+        in3.In(expectset[i][2]);
         in1.Calsum(); in2.Calsum(); in3.Calsum();
-
         h1.In(in1.output,in2.output,in3.output);
         h2.In(in1.output,in2.output,in3.output);
         h1.Calres1(in1,in2,in3);
@@ -214,7 +114,19 @@ int main()
         out1.In(h1,h2); out2.In(h1,h2);
         out1.calres1(h1,h2);
         out2.calres2(h1,h2);
-        cout<<2009+i<<"年的公路客运量为"<<out1.output<<" 货运量为"<<out2.output<<endl;
+
+    //    double temp=in1.output*in1.weight[0]+in2.output*in2.weight[0]+in3.output*in3.weight[0]+h1.xita;
+    //    double temp1=in1.output*in1.weight[1]+in2.output*in2.weight[1]+in3.output*in3.weight[1]+h2.xita;
+    //    double outcome=temp*h1.weight[0]+temp1*h2.weight[0]+out1.xita;
+    //    double outcome1=temp*h1.weight[1]+temp1*h2.weight[1]+out2.xita;
+        double outcome,outcome1;
+        outcome=out1.output; outcome1=out2.output;
+        cout<<outcome<<" "<<outcome1<<endl;
+        outcome=out1.output*(42927-5126)+5126;
+        outcome1=out2.output*(20803-1237)+1237;
+        // outcome1=-1*log((1.0/outcome1)-1);
+        // *(20803-1237)+1237;
+        cout<<2009+i<<"年的公路客运量为"<<outcome<<" 货运量为"<<outcome1<<endl;
     }
     return 0;
 }
