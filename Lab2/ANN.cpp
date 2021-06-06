@@ -1,63 +1,134 @@
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
 #include <cmath>
-#include <math.h>
-#include <iomanip>
+
 using namespace std;
 
 const double LEARNING_RATE=0.9;
 
-typedef struct Inputlayer_Node{
-    double data;//输入特征值
+class Input
+{
+private:
+    double input;
+    double Calsum();
+    double Itera(double nexterror);
+public:  
+    double output;
     double weight[2];
-}Inputlayer_Node; 
+    Input(/* args */);
+    Input(double in);
+};
 
-typedef struct Hiddenlayer_Node{
-    double weight[2];//权重
-    double differnces;//计算求和时的偏差值
-    double data;//全加器结果
-    double error;//bp误差
-}HiddenLayer_Node;
-
-void rand_Input(Inputlayer_Node temp)
+Input::Input(/* args */)
 {
-    return ;
+    input=0.0;
+    output=0.0;
+    weight[0]=0.5;
+    weight[1]=0.5;
+}
+Input::Input(double in)
+{
+    input=in;
+}
+double Input::Calsum()
+{
+    output=input;
 }
 
-void rand_Hidden(HiddenLayer_Node temp)
+double Input::Itera(double nexterror)
 {
-    return ;
+    for(int i=0;i<3;i++){
+        weight[i]+=LEARNING_RATE*1.0*nexterror*output;
+    }
 }
 
-double Hidden_Layer_Compute(Inputlayer_Node node1, Inputlayer_Node node2, Inputlayer_Node node3)
+class Hidden
 {
-    return ;
-
+private:
+    double input[3];
+    double xita;
+    double Calres1(Input a, Input b, Input c);
+    double Calres2(Input a, Input b, Input c);
+    double Calerror(double nexterror);
+    double Itera(double nexterror);
+public:  
+    double output;
+    double error;
+    double weight;
+    Hidden(double in1,double in2,double in3);   
+};
+Hidden::Hidden(double in1,double in2,double in3)
+{
+    input[0]=in1; input[1]=in2;input[2]=in3;
+    output=0.0;
+    error=0.0;
+    xita=0.2;
+    weight=0.5;
+}
+double Hidden::Calres1(Input a, Input b, Input c)
+{
+    double temp;
+    temp=a.output*a.weight[0]+b.output*b.weight[0]+c.output*c.weight[0]+xita;
+    output=1.0/(1.0+exp(-1.0*temp));
+}
+double Hidden::Calres2(Input a, Input b, Input c)
+{
+    double temp;
+    temp=a.output*a.weight[1]+b.output*b.weight[1]+c.output*c.weight[1]+xita;
+    output=1.0/(1.0+exp(-1.0*temp));
+}
+double Hidden::Calerror(double nexterror)
+{
+    double temp=output*1.0*(1.0-output)*nexterror*weight;
+}
+double Hidden::Itera(double nexterror)
+{
+    weight+=LEARNING_RATE*1.0*nexterror*output;
 }
 
-double Output_Layer_Compute()
+class Out
 {
-    return 0.0;
+private:
+    double lable;
+    double input[2];
+    double xita;
+    double calres(Hidden h1, Hidden h2);
+    double calerror();
+public:
+    double output;
+    double error;
+    Out();
+    Out(double lab);
+    Out(Hidden h1,Hidden h2);
+};
+Out::Out()
+{
+    lable=0.0;input[0]=0.0;input[1]=0.0;
+    xita=0.3;
+    output=0.0;
+    error=0.0;
+}
+Out::Out(double lab)
+{
+    lable=lab;
+}
+Out::Out(Hidden h1, Hidden h2)
+{
+    input[0]=h1.output;
+    input[1]=h2.output;
 }
 
-double bp()
+double Out::calres(Hidden h1, Hidden h2)
 {
-    return 0.0;
+    double temp;
+    temp=h1.output*h1.weight+h2.output*h2.weight;
+    output=1.0/(1.0+exp(-1.0*temp));
 }
-
-void update_hidden()
+double Out::calerror()
 {
-    return ;
+    error=output*(1-output)*(lable-output);
 }
-
-void update_Input()
-{
-    return ;
-}
-
 
 int main()
 {
-
+    return 0;
 }
