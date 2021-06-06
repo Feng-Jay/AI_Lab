@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
+#include <time.h>
 
 const double LEARNING_RATE=0.035;
 

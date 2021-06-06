@@ -27,27 +27,37 @@ double trainingset[19][5]={
     {59.17,2.95,0.69,42927,20803}
 };
 double expectset[2][3]={
-    {60.63,3.1,0.79},
-    {73.39,3.9635,0.9880}
+    {60.63, 3.1, 0.79},
+    {73.39, 3.9635, 0.9880}
 };
 void standize()
 {/*min-max*/
     double mm[5]={20.55,0.6,0.09,5126,1237};
+    double mmm[5];
+    for(int m=0;m<5;m++){
+        mmm[m]=trainingset[18][m]-mm[m];
+    }
     for(int m=0;m<5;m++){
         for(int i=0;i<19;i++){
             trainingset[i][m]=(1.0*(trainingset[i][m]-mm[m]))/(1.0*(trainingset[18][m]-mm[m]));
         }
     }
-    // for(int i=0;i<19;i++){
-    //     cout<<i<<" ";
-    //     for(int j=0;j<5;j++)
-    //     {cout<<trainingset[i][j]<<" ";}
-    //     cout<<endl;
-    // }
+    for(int i=0;i<19;i++){
+        cout<<i<<" ";
+        for(int j=0;j<5;j++)
+        {cout<<trainingset[i][j]<<" ";}
+        cout<<endl;
+    }
      for(int m=0;m<3;m++){
         for(int i=0;i<2;i++){
-            expectset[i][m]=(1.0*(expectset[i][m]-mm[m]))/(1.0*(trainingset[18][m]-mm[m]));
+            expectset[i][m]=(expectset[i][m]-mm[m])/mmm[m];
         }
+    }
+     for(int i=0;i<2;i++){
+        cout<<i<<" ";
+        for(int j=0;j<3;j++)
+        {cout<<expectset[i][j]<<" ";}
+        cout<<endl;
     }
 }
 int main()
@@ -122,8 +132,8 @@ int main()
         double outcome,outcome1;
         outcome=out1.output; outcome1=out2.output;
         cout<<outcome<<" "<<outcome1<<endl;
-        outcome=out1.output*(42927-5126)+5126;
-        outcome1=out2.output*(20803-1237)+1237;
+        outcome=out1.output*(59927-5126)+6126;
+        outcome1=out2.output*(34803-1237)+1237;
         // outcome1=-1*log((1.0/outcome1)-1);
         // *(20803-1237)+1237;
         cout<<2009+i<<"年的公路客运量为"<<outcome<<" 货运量为"<<outcome1<<endl;
