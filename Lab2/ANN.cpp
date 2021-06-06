@@ -45,22 +45,23 @@ void standize()
     for(int i=0;i<19;i++){
             trainingset[i][4]=(1.0*(trainingset[i][4]-mm[4]))/(1.0*(35000-mm[4]));
         }
-    for(int i=0;i<19;i++){
-        cout<<i<<" ";
-        for(int j=0;j<5;j++)
-        {cout<<trainingset[i][j]<<" ";}
-        cout<<endl;
-    }
+    ////debug
+    // for(int i=0;i<19;i++){
+    //     cout<<i<<" ";
+    //     for(int j=0;j<5;j++)
+    //     {cout<<trainingset[i][j]<<" ";}
+    //     cout<<endl;
+    // }
+    //  for(int i=0;i<2;i++){
+    //     cout<<i<<" ";
+    //     for(int j=0;j<3;j++)
+    //     {cout<<expectset[i][j]<<" ";}
+    //     cout<<endl;
+    // }
      for(int m=0;m<3;m++){
         for(int i=0;i<2;i++){
             expectset[i][m]=(expectset[i][m]-mm[m])/mmm[m];
         }
-    }
-     for(int i=0;i<2;i++){
-        cout<<i<<" ";
-        for(int j=0;j<3;j++)
-        {cout<<expectset[i][j]<<" ";}
-        cout<<endl;
     }
 }
 int main()
@@ -106,14 +107,14 @@ int main()
         in2.Itera(h1.error,h2.error);
         in3.Itera(h1.error,h2.error);
     }
-    // debug
-    cout<<in1.weight[0]<<" "<<in1.weight[1]<<endl;
-    cout<<in2.weight[0]<<" "<<in2.weight[1]<<endl;
-    cout<<in3.weight[0]<<" "<<in3.weight[1]<<endl;
-    cout<<h1.weight[0]<<" "<<h1.weight[1]<<" "<<h1.xita<<endl;
-    cout<<h2.weight[0]<<" "<<h2.weight[1]<<" "<<h2.xita<<endl;
-    cout<<out1.xita<<endl;
-    cout<<out2.xita<<endl;
+    //// debug
+    // cout<<in1.weight[0]<<" "<<in1.weight[1]<<endl;
+    // cout<<in2.weight[0]<<" "<<in2.weight[1]<<endl;
+    // cout<<in3.weight[0]<<" "<<in3.weight[1]<<endl;
+    // cout<<h1.weight[0]<<" "<<h1.weight[1]<<" "<<h1.xita<<endl;
+    // cout<<h2.weight[0]<<" "<<h2.weight[1]<<" "<<h2.xita<<endl;
+    // cout<<out1.xita<<endl;
+    // cout<<out2.xita<<endl;
     cout<<"Traning over, begin expect..."<<endl;
     for(int i=0;i<2;i++){
         in1.In(expectset[i][0]);
