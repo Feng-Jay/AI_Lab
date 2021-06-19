@@ -56,7 +56,7 @@ int judge_valid(Martix mylist)
     }
     for(int i=0;i<9;i++){
         for(int j=i+1;j<9;j++){
-            if(array[i]>array[j])
+            if(array[i]>array[j]&&array[i]*array[j]!=0)
             countt++;
         }
     }
