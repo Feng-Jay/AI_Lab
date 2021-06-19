@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <tuple>
 #include <cmath>
-
+#include <time.h>
 using namespace std;
 
 int ini[3][3]={1,2,3,8,0,6,4,7,5};
@@ -166,9 +166,13 @@ int AStar(Martix &mylist)
 Martix mylist;
 int main()
 {
+    clock_t begin,end;
+    begin=clock();
     init(mylist);
     if(judge_valid(mylist))
     AStar(mylist);
     else cout<<"The input cann't solved by Astar"<<endl;
+    end=clock();
+    cout<<"A* time = "<<-1*double(begin-end)/CLOCKS_PER_SEC<<"s"<<endl;
     return 0;
 }

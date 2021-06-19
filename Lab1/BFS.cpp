@@ -2,10 +2,11 @@
 #include <queue>
 #include <algorithm>
 #include <tuple>
+#include <time.h>
 
 using namespace std;
 
-int ini[3][3]={2,3,5,4,0,6,7,8,1};
+int ini[3][3]={1,2,3,8,0,6,4,7,5};
 int tar[3][3]={1,2,3,8,0,4,7,6,5};
 int dx[4]={0,0,-1,1}; int dy[4]={1,-1,0,0};
 
@@ -24,7 +25,7 @@ int judge_valid(Martix mylist)
     }
     for(int i=0;i<9;i++){
         for(int j=i+1;j<9;j++){
-            if(array[i]>array[j])
+            if(array[i]>array[j]&&array[i]*array[j]!=0)
             countt++;
         }
     }
@@ -133,9 +134,13 @@ int BFS(Martix &mylist)
 Martix mylist;
 int main()
 {
+    clock_t begin,end;
+    begin=clock();
     init(mylist);
     if(judge_valid(mylist))
     BFS(mylist);
     else cout<<"The input cann't solved by BFS"<<endl;
+    end=clock();
+    cout<<"BFS time = "<<-1*double(begin-end)/CLOCKS_PER_SEC<<"s"<<endl;
     return 0;
 }
